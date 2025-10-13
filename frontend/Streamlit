@@ -1,0 +1,29 @@
+import streamlit as st
+
+# Streamlit UI 
+st.title("Automated Review Rating System")
+st.write("Enter a review and see predicted ratings from two models:")
+
+# Input text area
+user_input = st.text_area("Enter your review:", height=150)
+
+# Predict button
+if st.button("Submit"):
+    if not user_input.strip():
+        st.warning("Please enter a review before submitting.")
+    else:
+        # Transform input and get predictions
+        X_input_a = vectorizer_a.transform([user_input])
+        X_input_b = vectorizer_b.transform([user_input])
+        pred_a = model_a.predict(X_input_a)[0]
+        pred_b = model_b.predict(X_input_b)[0]
+
+        # Display results
+        st.success("Prediction Results:")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Model A (Balanced)")
+            st.write(f"Predicted Rating: {pred_a}")
+        with col2:
+            st.subheader("Model B (Imbalanced)")
+            st.write(f"Predicted Rating: {pred_b}")
